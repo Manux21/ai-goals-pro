@@ -1,0 +1,1 @@
+{"name":"ai-goals-pro","private":true,"scripts":{"dev":"./scripts/dev.sh","api":"cd backend && ./venv/bin/python scripts/export-openapi.py && cd ../frontend && OPENAPI_PATH=../backend/openapi.json npm run api","api:generate":"npm run api --prefix frontend"}}

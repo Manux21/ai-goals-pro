@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Python
+backend/venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+*.egg
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build & output
+dist/
+build/
+*.tsbuildinfo
+
+# IDE & editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing & coverage
+coverage/
+.nyc_output/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Generated
+backend/openapi.json
+
+# Cursor
+.cursor/
