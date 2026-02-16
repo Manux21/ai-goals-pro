@@ -1,1 +1,14 @@
-{"name":"ai-goals-pro","private":true,"scripts":{"dev":"./scripts/dev.sh","api":"cd backend && ./venv/bin/python scripts/export-openapi.py && cd ../frontend && OPENAPI_PATH=../backend/openapi.json npm run api","api:generate":"npm run api --prefix frontend"}}
+{
+  "name": "ai-goals-pro",
+  "private": true,
+  "scripts": {
+    "dev": "./scripts/dev.sh",
+    "api": "cd backend && ./venv/bin/python scripts/export-openapi.py && cd ../frontend && OPENAPI_PATH=../backend/openapi.json npm run api",
+    "api:generate": "npm run api --prefix frontend",
+    "prepare": "husky",
+    "lint": "npm run lint --prefix frontend && npm run stylelint --prefix frontend"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
