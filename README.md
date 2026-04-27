@@ -2,15 +2,20 @@
 
 ## Требования
 
-- Python 3.9+
+- Python 3.12
 - Node.js 18+
-- Docker и Docker Compose (для PostgreSQL)
+- Docker и Docker Compose (только для локального PostgreSQL)
 
 ## Запуск
 
 ### 1. База данных
 
-Из корня репозитория:
+Поддерживаются два варианта:
+
+- Локальная БД в Docker (`localhost:5432`)
+- Внешняя БД (например, Supabase)
+
+Для локальной БД:
 
 ```bash
 cd backend
@@ -29,7 +34,13 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-В `.env` при необходимости измените `DATABASE_URL` и укажите `OPENAI_API_KEY`.
+В `.env` задайте `DATABASE_URL` и при необходимости `OPENAI_API_KEY`.
+
+Пример для Supabase:
+
+```env
+DATABASE_URL=postgresql+asyncpg://<user>:<password>@<host>:<port>/postgres?sslmode=require
+```
 
 Миграции:
 
@@ -59,13 +70,21 @@ npm run dev
 
 ### Запуск всего одной командой
 
-Из корня репозитория (нужны Docker, настроенный venv в backend и `npm install` в frontend):
+Из корня репозитория:
 
 ```bash
 npm run dev
 ```
 
-Скрипт поднимает PostgreSQL (Docker), ждёт готовности БД, затем запускает API (порт 8000) и фронтенд (порт 5173). Ctrl+C останавливает только бэкенд и фронтенд; контейнер с БД продолжает работать.
+Скрипт:
+
+- проверяет `backend/.env` и `DATABASE_URL`
+- поднимает Docker PostgreSQL только если `DATABASE_URL` указывает на localhost
+- пропускает Docker для внешней БД (например, Supabase)
+- применяет миграции (`alembic upgrade head`)
+- запускает API (порт 8000) и фронтенд (порт 5173)
+
+`Ctrl+C` останавливает бэкенд и фронтенд; контейнер локальной БД (если был запущен) продолжает работать.
 
 ## Генерация API-контрактов (фронтенд)
 
