@@ -1,0 +1,59 @@
+.apiSection {
+  width: 100%;
+}
+
+.sectionTitle {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.status,
+.error {
+  margin: 0;
+}
+
+.error {
+  color: var(--color-error);
+}
+
+.result {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  overflow: auto;
+  font-size: 0.875rem;
+  background: var(--color-bg-secondary, #f5f5f5);
+  border-radius: 4px;
+}
+
+.block {
+  margin-bottom: 1.25rem;
+}
+
+.blockTitle {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  max-width: 20rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-border, #ddd);
+  border-radius: 4px;
+}
+
+.btn {
+  margin-top: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  background: var(--color-primary, #333);
+  color: var(--color-inverse, #fff);
+  border: none;
+  border-radius: 4px;
+}
