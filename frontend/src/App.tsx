@@ -1,9 +1,9 @@
-import { defineComponent } from 'vue'
-import TasksPage from '~/pages/index'
+import { defineComponent } from "vue"
+import TasksPage from "~/pages/index"
 
 export default defineComponent({
-  name: 'App',
-  setup() {
-    return () => <TasksPage />
-  },
+	name: "App",
+	setup() {
+		return () => <TasksPage />
+	},
 })

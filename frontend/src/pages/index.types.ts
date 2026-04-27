@@ -1,1 +1,1 @@
-export type TTabId = 'tasks' | 'debug'
+export type TTabId = "tasks" | "debug"
