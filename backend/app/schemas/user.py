@@ -17,5 +17,6 @@ class UserCreate(UserBase):
 
 class UserResponse(UserBase):
     id: UUID
+    auth_provider_id: str | None = None
 
     model_config = {"from_attributes": True}

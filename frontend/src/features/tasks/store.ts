@@ -27,5 +27,10 @@ export const useTasksStore = defineStore('tasks', () => {
     }
   }
 
-  return { items, loading, error, load }
+  return {
+    items,
+    loading,
+    error,
+    load
+  }
 })

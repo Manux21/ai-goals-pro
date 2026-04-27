@@ -8,6 +8,7 @@ class User(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "users"
 
     email: Mapped[str] = mapped_column(String(255), unique=True)
+    auth_provider_id: Mapped[str | None] = mapped_column(String(255), unique=True, nullable=True)
     timezone: Mapped[str] = mapped_column(String(64), default="UTC")
     work_hours_start: Mapped[int] = mapped_column(Integer, default=9)
     work_hours_end: Mapped[int] = mapped_column(Integer, default=18)
