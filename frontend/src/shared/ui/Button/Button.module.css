@@ -1,0 +1,100 @@
+.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.75rem;
+	padding: 0 var(--space-5);
+	font: var(--font-button);
+	letter-spacing: 0.01em;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: var(--radius-lg);
+	transition:
+		background-color var(--transition-base),
+		border-color var(--transition-base),
+		box-shadow var(--transition-base),
+		color var(--transition-base),
+		transform var(--motion-duration-hover) var(--motion-ease-soft);
+}
+
+.button:hover {
+	transform: translateY(-1px) scale(1.02);
+}
+
+.button:active {
+	transform: translateY(0);
+}
+
+.button:disabled {
+	color: var(--color-text-disabled);
+	pointer-events: none;
+	transform: none;
+	opacity: 0.72;
+}
+
+.primary {
+	color: var(--color-text-inverse);
+	background: linear-gradient(
+		135deg,
+		#d8ff96 0%,
+		var(--color-accent-lime) 54%,
+		#6fff22 100%
+	);
+	border-color: rgb(255 255 255 / 22%);
+	box-shadow:
+		0 0.9rem 2rem rgb(166 255 0 / 26%),
+		0 0 1.8rem rgb(166 255 0 / 28%);
+}
+
+.primary:hover {
+	border-color: rgb(255 255 255 / 38%);
+	box-shadow:
+		0 1.1rem 2.4rem rgb(166 255 0 / 32%),
+		0 0 2.4rem rgb(166 255 0 / 34%);
+}
+
+.secondary {
+	color: var(--color-text-primary);
+	background: rgb(255 255 255 / 6%);
+	border-color: rgb(255 255 255 / 12%);
+}
+
+.secondary:hover {
+	background: rgb(255 255 255 / 9%);
+	border-color: rgb(166 255 0 / 28%);
+	box-shadow: 0 0 1.4rem rgb(166 255 0 / 12%);
+}
+
+.ghost {
+	color: var(--color-text-primary);
+	background: transparent;
+	border-color: var(--color-border);
+}
+
+.ghost:hover {
+	background: rgb(255 255 255 / 4%);
+	border-color: rgb(166 255 0 / 24%);
+	box-shadow: 0 0 1.2rem rgb(166 255 0 / 10%);
+}
+
+.lg {
+	min-height: 3.25rem;
+	padding: 0 var(--space-8);
+	font: var(--font-h3);
+	border-radius: var(--radius-xl);
+}
+
+.block {
+	width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.button {
+		transition-duration: 1ms;
+	}
+
+	.button:hover,
+	.button:active {
+		transform: none;
+	}
+}

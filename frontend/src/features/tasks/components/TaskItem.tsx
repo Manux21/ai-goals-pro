@@ -1,10 +1,8 @@
 import { defineComponent } from "vue"
 import type { TTaskResponse } from "~/domain/tasks/types"
+import { Badge, Card } from "~/shared/ui"
+import type { ITaskItemProps } from "./TaskItem.types"
 import s from "./TaskItem.module.css"
-
-interface ITaskItemProps {
-	task: TTaskResponse
-}
 
 export const TaskItem = defineComponent({
 	name: "TaskItem",
@@ -15,14 +13,22 @@ export const TaskItem = defineComponent({
 		},
 	},
 	setup(props: ITaskItemProps) {
-		return () => (
-			<li class={s.item}>
-				<span class={s.name}>{props.task.name}</span>
-				<span class={s.hours}>{props.task.estimated_hours} ч</span>
-				{props.task.deadline && (
-					<span class={s.deadline}>{props.task.deadline}</span>
-				)}
-			</li>
-		)
+		return () => {
+			let deadlineContent = null
+
+			if (props.task.deadline) {
+				deadlineContent = <Badge>{props.task.deadline}</Badge>
+			}
+
+			return (
+				<Card tag="li" class={s.item}>
+					<span class={s.name}>{props.task.name}</span>
+					<div class={s.meta}>
+						<Badge variant="success">{props.task.estimated_hours} ч</Badge>
+						{deadlineContent}
+					</div>
+				</Card>
+			)
+		}
 	},
 })

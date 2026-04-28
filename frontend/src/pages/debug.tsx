@@ -1,6 +1,7 @@
 import { defineComponent, ref } from "vue"
 import { useTasksApiStore } from "~/features/tasks"
 import { GoalType } from "~/api/generated"
+import { Badge, Button, Card, Input } from "~/shared/ui"
 import s from "./debug.module.css"
 
 export default defineComponent({
@@ -59,273 +60,281 @@ export default defineComponent({
 
 		const onListGoals = () => apiStore.fetchGoals(listGoalsUserId.value)
 		const onGetGoal = () => apiStore.fetchGoal(getGoalId.value)
-		const onCreateGoal = () =>
-			apiStore.createGoal({
+		const onCreateGoal = () => {
+			let targetHoursPerWeek = null
+			if (createGoalHoursPerWeek.value) {
+				targetHoursPerWeek = Number(createGoalHoursPerWeek.value)
+			}
+
+			return apiStore.createGoal({
 				name: createGoalName.value,
 				goal_type: createGoalType.value,
 				priority: Number(createGoalPriority.value) || 1,
 				user_id: createGoalUserId.value,
 				deadline: createGoalDeadline.value || null,
-				target_hours_per_week: createGoalHoursPerWeek.value
-					? Number(createGoalHoursPerWeek.value)
-					: null,
+				target_hours_per_week: targetHoursPerWeek,
 			})
+		}
 
-		return () => (
-			<section class={s.apiSection}>
-				<h2 class={s.sectionTitle}>Проверка API</h2>
-				{apiStore.loading && <p class={s.status}>Запрос...</p>}
-				{apiStore.error && <p class={s.error}>{apiStore.error}</p>}
-				{apiStore.lastResult != null && (
-					<pre class={s.result}>
-						{JSON.stringify(apiStore.lastResult, null, 2)}
-					</pre>
-				)}
+		return () => {
+			let loadingContent = null
+			let errorContent = null
+			let resultContent = null
 
-				<div class={s.block}>
+			if (apiStore.loading) {
+				loadingContent = <Badge variant="selected">Запрос...</Badge>
+			}
+
+			if (apiStore.error) {
+				errorContent = <Badge variant="error">{apiStore.error}</Badge>
+			}
+
+			if (apiStore.lastResult != null) {
+				resultContent = (
+					<pre class={s.result}>{JSON.stringify(apiStore.lastResult, null, 2)}</pre>
+				)
+			}
+
+			return (
+				<section class={s.apiSection} id="home">
+					<h2 class={s.sectionTitle}>Проверка API</h2>
+					{loadingContent}
+					{errorContent}
+					{resultContent}
+
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Users: список (debug)</h3>
-					<button type="button" class={s.btn} onClick={onListUsers}>
+					<Button type="button" variant="secondary" onClick={onListUsers}>
 						GET /users
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Users: по id</h3>
-					<input
+					<Input
 						value={getUserId.value}
 						onInput={(e: Event) =>
 							(getUserId.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="user_id"
 					/>
-					<button type="button" class={s.btn} onClick={onGetUser}>
+					<Button type="button" variant="secondary" onClick={onGetUser}>
 						GET /users/:id
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Users: создать</h3>
-					<input
+					<Input
 						value={createUserEmail.value}
 						onInput={(e: Event) =>
 							(createUserEmail.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						type="email"
 						placeholder="email"
 					/>
-					<input
+					<Input
 						value={createUserTimezone.value}
 						onInput={(e: Event) =>
 							(createUserTimezone.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="timezone (UTC)"
 					/>
-					<input
+					<Input
 						value={createUserWorkStart.value}
 						onInput={(e: Event) =>
 							(createUserWorkStart.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						type="number"
 						min="0"
 						max="23"
 						placeholder="work_hours_start (0-23)"
 					/>
-					<input
+					<Input
 						value={createUserWorkEnd.value}
 						onInput={(e: Event) =>
 							(createUserWorkEnd.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						type="number"
 						min="0"
 						max="23"
 						placeholder="work_hours_end (0-23)"
 					/>
-					<input
+					<Input
 						value={createUserMinSleep.value}
 						onInput={(e: Event) =>
 							(createUserMinSleep.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						type="number"
 						min="4"
 						max="12"
 						placeholder="min_sleep_hours (4-12)"
 					/>
-					<button type="button" class={s.btn} onClick={onCreateUser}>
+					<Button type="button" onClick={onCreateUser}>
 						POST /users
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<div class={s.anchor} id="tasks" />
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Tasks: список</h3>
-					<input
+					<Input
 						value={listTasksGoalId.value}
 						onInput={(e: Event) =>
 							(listTasksGoalId.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="goal_id (необяз.)"
 					/>
-					<button type="button" class={s.btn} onClick={onListTasks}>
+					<Button type="button" variant="secondary" onClick={onListTasks}>
 						GET /tasks
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Tasks: по id</h3>
-					<input
+					<Input
 						value={getTaskId.value}
 						onInput={(e: Event) =>
 							(getTaskId.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="task_id"
 					/>
-					<button type="button" class={s.btn} onClick={onGetTask}>
+					<Button type="button" variant="secondary" onClick={onGetTask}>
 						GET /tasks/:id
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Tasks: создать</h3>
-					<input
+					<Input
 						value={createTaskName.value}
 						onInput={(e: Event) =>
 							(createTaskName.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="name"
 					/>
-					<input
+					<Input
 						value={createTaskHours.value}
 						onInput={(e: Event) =>
 							(createTaskHours.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						type="number"
 						placeholder="estimated_hours"
 					/>
-					<input
+					<Input
 						value={createTaskDeadline.value}
 						onInput={(e: Event) =>
 							(createTaskDeadline.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="deadline"
 					/>
-					<input
+					<Input
 						value={createTaskGoalId.value}
 						onInput={(e: Event) =>
 							(createTaskGoalId.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="goal_id"
 					/>
-					<button type="button" class={s.btn} onClick={onCreateTask}>
+					<Button type="button" onClick={onCreateTask}>
 						POST /tasks
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<div class={s.anchor} id="goals" />
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Goals: список</h3>
-					<input
+					<Input
 						value={listGoalsUserId.value}
 						onInput={(e: Event) =>
 							(listGoalsUserId.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="user_id"
 					/>
-					<button type="button" class={s.btn} onClick={onListGoals}>
+					<Button type="button" variant="secondary" onClick={onListGoals}>
 						GET /goals
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Goals: по id</h3>
-					<input
+					<Input
 						value={getGoalId.value}
 						onInput={(e: Event) =>
 							(getGoalId.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="goal_id"
 					/>
-					<button type="button" class={s.btn} onClick={onGetGoal}>
+					<Button type="button" variant="secondary" onClick={onGetGoal}>
 						GET /goals/:id
-					</button>
-				</div>
+					</Button>
+				</Card>
 
-				<div class={s.block}>
+				<Card class={s.block}>
 					<h3 class={s.blockTitle}>Goals: создать</h3>
-					<input
+					<Input
 						value={createGoalName.value}
 						onInput={(e: Event) =>
 							(createGoalName.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="name"
 					/>
-					<select
+					<Input
+						as="select"
 						value={createGoalType.value}
 						onChange={(e: Event) =>
 							(createGoalType.value = (e.target as HTMLSelectElement)
 								.value as GoalType)
 						}
-						class={s.input}
 					>
 						<option value={GoalType.Work}>work</option>
 						<option value={GoalType.Learning}>learning</option>
 						<option value={GoalType.Hobby}>hobby</option>
-					</select>
-					<input
+					</Input>
+					<Input
 						value={createGoalPriority.value}
 						onInput={(e: Event) =>
 							(createGoalPriority.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						type="number"
 						min="1"
 						max="5"
 						placeholder="priority 1-5"
 					/>
-					<input
+					<Input
 						value={createGoalUserId.value}
 						onInput={(e: Event) =>
 							(createGoalUserId.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="user_id"
 					/>
-					<input
+					<Input
 						value={createGoalDeadline.value}
 						onInput={(e: Event) =>
 							(createGoalDeadline.value = (e.target as HTMLInputElement).value)
 						}
-						class={s.input}
 						placeholder="deadline"
 					/>
-					<input
+					<Input
 						value={createGoalHoursPerWeek.value}
 						onInput={(e: Event) =>
 							(createGoalHoursPerWeek.value = (
 								e.target as HTMLInputElement
 							).value)
 						}
-						class={s.input}
 						type="number"
 						placeholder="target_hours_per_week"
 					/>
-					<button type="button" class={s.btn} onClick={onCreateGoal}>
+					<Button type="button" onClick={onCreateGoal}>
 						POST /goals
-					</button>
-				</div>
-			</section>
-		)
+					</Button>
+				</Card>
+				<div class={s.anchor} id="analytics" />
+				<Card class={s.block}>
+					<h3 class={s.blockTitle}>Analytics</h3>
+					<Badge variant="selected">Раздел аналитики готовится</Badge>
+				</Card>
+				</section>
+			)
+		}
 	},
 })

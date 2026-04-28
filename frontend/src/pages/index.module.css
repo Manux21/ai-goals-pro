@@ -1,45 +1,1000 @@
 .page {
+	position: relative;
+	min-height: 100dvh;
+	overflow-x: clip;
+	background:
+		radial-gradient(circle at 50% 64%, rgb(205 187 255 / 10%), transparent 14rem),
+		linear-gradient(120deg, rgb(5 8 13 / 98%), rgb(8 13 17 / 92%)),
+		var(--color-background);
+	animation: page-fade-in 0.6s ease-out;
+}
+
+.page::before {
+	position: absolute;
+	inset: 8% 9%;
+	z-index: 2;
+	content: "";
+	background:
+		radial-gradient(ellipse at 50% 50%, rgb(5 8 13 / 82%), rgb(5 8 13 / 58%) 56%, transparent 78%),
+		rgb(5 8 13 / 28%);
+	border-radius: 4rem;
+	filter: blur(2.75rem);
+	pointer-events: none;
+}
+
+.videoBackground {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
 	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: grayscale(1) brightness(0.8) contrast(1.15);
+	opacity: 0.99;
+	pointer-events: none;
 }
 
-.tabs {
-	display: flex;
-	gap: 0;
-	margin-bottom: 1.5rem;
-	border-bottom: 1px solid var(--color-border, #eee);
+.content {
+	position: relative;
+	z-index: 3;
+	display: grid;
+	min-height: 100dvh;
+	padding: var(--space-10) var(--space-6) 8rem;
 }
 
-.tab,
-.tabActive {
+.screen {
+	display: grid;
+	place-items: center;
+	width: 100%;
+	min-height: calc(100dvh - 18.5rem);
+	will-change: opacity, transform, filter;
+}
+
+.screenEnterActive,
+.screenLeaveActive {
+	transition:
+		opacity var(--motion-duration-screen) var(--motion-ease-cinematic),
+		transform var(--motion-duration-screen) var(--motion-ease-cinematic),
+		filter var(--motion-duration-screen) var(--motion-ease-cinematic);
+}
+
+.screenEnterFrom {
+	opacity: 0;
+	filter: blur(8px);
+	transform: translateY(24px) scale(0.98);
+}
+
+.screenEnterTo,
+.screenLeaveFrom {
+	opacity: 1;
+	filter: blur(0);
+	transform: translateY(0) scale(1);
+}
+
+.screenLeaveTo {
+	opacity: 0;
+	filter: blur(6px);
+	transform: translateY(-16px) scale(0.98);
+}
+
+.centerBlock {
+	display: grid;
+	justify-items: center;
+	gap: var(--space-5);
+	width: 100%;
+	max-width: 58rem;
+	text-align: center;
+}
+
+.goalsBlock,
+.aiBlock,
+.summaryBlock {
+	display: grid;
+	justify-items: center;
+	gap: var(--space-6);
+	width: min(100%, 70rem);
+}
+
+.goalsBlock {
+	width: min(100%, 76rem);
+}
+
+.aiBlock {
+	width: min(100%, 34rem);
+}
+
+.summaryBlock {
+	width: min(100%, 34.5rem);
+}
+
+.heading {
+	display: grid;
+	justify-items: center;
+	gap: var(--space-2);
+	width: 100%;
+	text-align: center;
+}
+
+.revealHeadline {
+	animation: reveal-soft 0.62s 80ms var(--motion-ease-cinematic) both;
+}
+
+.revealSubtitle {
+	animation: reveal-soft 0.62s 180ms var(--motion-ease-cinematic) both;
+}
+
+.revealPanel {
+	animation: reveal-panel 0.7s 280ms var(--motion-ease-cinematic) both;
+}
+
+.heroTitle,
+.heroSubtitle,
+.title,
+.subtitle {
 	margin: 0;
-	padding: 0.5rem 1rem;
-	cursor: pointer;
-	background: transparent;
-	color: inherit;
-	border: none;
-	border-bottom: 2px solid transparent;
-	border-radius: 0;
 }
 
-.tab:hover {
-	background: var(--color-bg-secondary, #f5f5f5);
+.heroTitle {
+	max-width: 100%;
+	font: var(--font-display-xl);
+	color: var(--color-text-primary);
+	letter-spacing: -0.06em;
+	text-shadow: 0 1rem 3rem rgb(255 255 255 / 12%);
 }
 
-.tabActive {
-	border-bottom-color: var(--color-primary, #333);
+.heroSubtitle {
+	font: var(--font-h2);
+	color: var(--color-text-secondary);
+}
+
+.heroSubtitle span {
+	color: var(--color-accent-lime);
+	text-shadow: 0 0 1.5rem rgb(166 255 0 / 36%);
+}
+
+.heroAccent {
+	width: min(18rem, 58vw);
+	height: 1px;
+	margin: var(--space-4) 0 var(--space-8);
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgb(151 106 255 / 46%),
+		rgb(166 255 0 / 54%),
+		transparent
+	);
+	box-shadow:
+		0 0 1.25rem rgb(151 106 255 / 18%),
+		0 0 2rem rgb(166 255 0 / 16%);
 }
 
 .title {
-	margin: 0 0 1.5rem;
-	font-size: 1.5rem;
-	font-weight: 600;
+	max-width: 100%;
+	font: var(--font-display-lg);
+	color: var(--color-text-primary);
+	letter-spacing: -0.055em;
+	text-shadow: 0 1rem 3rem rgb(255 255 255 / 10%);
 }
 
-.status,
-.error {
+.titleText {
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	column-gap: 0.28em;
+	max-width: 100%;
+}
+
+.titleWord {
+	display: inline-block;
+	background: linear-gradient(
+		90deg,
+		var(--color-text-primary),
+		#f4ffea,
+		var(--color-text-primary)
+	);
+	background-size: 240% 100%;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation:
+		word-enter 0.68s cubic-bezier(0.2, 0.8, 0.2, 1) both,
+		text-glow-shift 4.8s ease-in-out infinite;
+}
+
+.titleWord:nth-child(2) {
+	animation-delay: 90ms, 0s;
+}
+
+.titleWord:nth-child(3) {
+	animation-delay: 180ms, 0s;
+}
+
+.titleWord:nth-child(4) {
+	animation-delay: 270ms, 0s;
+}
+
+.titleWord:nth-child(5) {
+	animation-delay: 360ms, 0s;
+}
+
+.subtitle {
+	max-width: 31rem;
+	font: var(--font-body-lg);
+	color: var(--color-text-secondary);
+}
+
+.addCard {
+	display: grid;
+	place-items: stretch;
+	flex: 0 1 20rem;
+	width: min(100%, 20rem);
+	min-height: 16rem;
+	padding: 0;
+	overflow: hidden;
+	background:
+		radial-gradient(circle at 50% 34%, rgb(166 255 0 / 12%), transparent 8rem),
+		linear-gradient(135deg, rgb(255 255 255 / 7%), rgb(255 255 255 / 2%)),
+		rgb(17 23 24 / 66%);
+	border-color: rgb(166 255 0 / 22%);
+	border-radius: var(--radius-3xl);
+	animation: goal-card-enter 0.42s ease-out both;
+}
+
+.addGoalButton {
+	display: grid;
+	place-content: center;
+	justify-items: center;
+	gap: var(--space-6);
+	width: 100%;
+	min-height: 100%;
+	padding: 0;
+	color: var(--color-text-secondary);
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+}
+
+.plusMark {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 5rem;
+	height: 5rem;
+	background:
+		radial-gradient(circle, rgb(255 255 255 / 16%), transparent 58%),
+		linear-gradient(135deg, rgb(151 106 255 / 18%), rgb(166 255 0 / 18%));
+	border: 1px solid rgb(166 255 0 / 78%);
+	border-radius: 50%;
+	box-shadow:
+		0 0 1.25rem rgb(255 255 255 / 16%),
+		0 0 2.8rem rgb(166 255 0 / 36%);
+	animation: plus-glow-pulse 3.6s ease-in-out infinite;
+	transition:
+		border-color var(--transition-base),
+		box-shadow var(--transition-base),
+		transform var(--transition-base);
+}
+
+.plusLine {
+	position: absolute;
+	width: 1.6rem;
+	height: 0.18rem;
+	background: var(--color-text-primary);
+	border-radius: var(--radius-pill);
+	box-shadow: 0 0 1rem rgb(255 255 255 / 34%);
+}
+
+.plusLineVertical {
+	transform: rotate(90deg);
+}
+
+.addGoalButton:hover .plusMark {
+	border-color: rgb(166 255 0 / 82%);
+	box-shadow:
+		0 0 1.8rem rgb(151 106 255 / 58%),
+		0 0 3.2rem rgb(166 255 0 / 36%);
+	transform: scale(1.04);
+}
+
+.goalBoard {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	justify-content: center;
+	gap: var(--space-4);
+	width: min(100%, 72rem);
+	padding: var(--space-1);
+}
+
+.goalDraftCard {
+	display: grid;
+	align-content: space-between;
+	flex: 0 1 20rem;
+	gap: var(--space-5);
+	width: min(100%, 20rem);
+	min-height: 16rem;
+	padding: var(--space-5);
+	border-color: rgb(255 255 255 / 16%);
+	animation: goal-card-enter 0.42s ease-out both;
+}
+
+.goalDraftHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3);
+}
+
+.goalDraftField {
+	display: grid;
+	gap: var(--space-3);
+}
+
+.goalDraftField span {
+	font: var(--font-caption);
+	color: var(--color-text-secondary);
+}
+
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+	justify-content: center;
+}
+
+.listEnterActive,
+.listLeaveActive {
+	transition:
+		opacity var(--motion-duration-panel) var(--motion-ease-cinematic),
+		transform var(--motion-duration-panel) var(--motion-ease-cinematic),
+		filter var(--motion-duration-panel) var(--motion-ease-cinematic);
+}
+
+.listEnterFrom {
+	opacity: 0;
+	filter: blur(8px);
+	transform: translateY(0.9rem) scale(0.98);
+}
+
+.listEnterTo,
+.listLeaveFrom {
+	opacity: 1;
+	filter: blur(0);
+	transform: translateY(0) scale(1);
+}
+
+.listLeaveTo {
+	opacity: 0;
+	filter: blur(5px);
+	transform: translateY(-0.5rem) scale(0.98);
+}
+
+.listMove {
+	transition: transform var(--motion-duration-panel) var(--motion-ease-cinematic);
+}
+
+.staggerItem:nth-child(2) {
+	animation-delay: 80ms;
+	transition-delay: 80ms;
+}
+
+.staggerItem:nth-child(3) {
+	animation-delay: 160ms;
+	transition-delay: 160ms;
+}
+
+.staggerItem:nth-child(4) {
+	animation-delay: 240ms;
+	transition-delay: 240ms;
+}
+
+.staggerItem:nth-child(5) {
+	animation-delay: 320ms;
+	transition-delay: 320ms;
+}
+
+.heroButton,
+.startButton {
+	min-width: 11rem;
+	animation: text-rise 0.62s 320ms ease-out both;
+}
+
+.aiCards {
+	display: grid;
+	gap: var(--space-3);
+	width: 100%;
+}
+
+.aiCard {
+	display: grid;
+	gap: var(--space-4);
+	padding: var(--space-4);
+	background:
+		linear-gradient(120deg, rgb(255 255 255 / 8%), rgb(255 255 255 / 2%)),
+		rgb(12 18 19 / 74%);
+	border-color: rgb(255 255 255 / 12%);
+	animation: card-enter 0.42s ease-out both;
+}
+
+.aiCard:nth-child(2) {
+	animation-delay: 90ms;
+}
+
+.aiCard:nth-child(3) {
+	animation-delay: 180ms;
+}
+
+.goalPreviewHeader,
+.summaryGoal {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	min-width: 0;
+}
+
+.goalIcon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 2.5rem;
+	height: 2.5rem;
+	color: var(--color-accent-lime);
+	background: rgb(166 255 0 / 10%);
+	border: 1px solid rgb(166 255 0 / 12%);
+	border-radius: var(--radius-lg);
+	box-shadow: 0 0 1.4rem rgb(166 255 0 / 14%);
+}
+
+.goalIcon svg,
+.taskPill svg,
+.deadline svg {
+	width: 1rem;
+	height: 1rem;
+	fill: none;
+	stroke: currentcolor;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-width: 2;
+}
+
+.goalIcon svg {
+	width: 1.3rem;
+	height: 1.3rem;
+}
+
+.goalPreviewText {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3);
+	min-width: 0;
+	width: 100%;
+}
+
+.goalPreviewText h2,
+.summaryGoal h2,
+.summaryGoal p {
 	margin: 0;
 }
 
-.error {
-	color: var(--color-error);
+.goalPreviewText h2,
+.summaryGoal h2 {
+	font: var(--font-card-title);
+	color: var(--color-text-primary);
+}
+
+.summaryGoal p {
+	font: var(--font-caption);
+	color: var(--color-text-secondary);
+}
+
+.aiStatus {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	flex: 0 0 auto;
+	font: var(--font-caption);
+	color: var(--color-text-secondary);
+}
+
+.aiStatus span {
+	width: 0.45rem;
+	height: 0.45rem;
+	background: var(--color-accent-lime);
+	border-radius: 50%;
+	box-shadow: 0 0 0.75rem rgb(166 255 0 / 80%);
+	animation: status-pulse 1.1s ease-in-out infinite;
+}
+
+.taskPills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.taskPill {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1);
+	min-height: 1.8rem;
+	padding: 0 var(--space-3);
+	overflow: hidden;
+	font: var(--font-caption);
+	color: var(--color-text-primary);
+	background: rgb(255 255 255 / 5%);
+	border: 1px solid rgb(255 255 255 / 10%);
+	border-radius: var(--radius-pill);
+}
+
+.taskPill svg {
+	position: relative;
+	z-index: 1;
+	color: var(--color-accent-lime);
+}
+
+.generatedItem::after {
+	position: absolute;
+	inset: 0;
+	content: "";
+	background: linear-gradient(100deg, transparent 12%, rgb(166 255 0 / 18%), transparent 72%);
+	opacity: 0;
+	transform: translateX(-100%);
+	animation: generated-shimmer 1.5s 180ms ease-out both;
+}
+
+.summaryTable {
+	width: 100%;
+	padding: var(--space-3);
+	background: rgb(14 19 21 / 68%);
+	border: 1px solid rgb(255 255 255 / 14%);
+	border-radius: var(--radius-2xl);
+	box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 36%);
+	backdrop-filter: blur(1.5rem);
+}
+
+.summaryHead,
+.summaryRow {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 7.25rem 8rem;
+	align-items: center;
+	gap: var(--space-4);
+}
+
+.summaryHead {
+	padding: 0 var(--space-3) var(--space-2);
+	font: var(--font-caption);
+	color: var(--color-text-secondary);
+}
+
+.summaryRow {
+	padding: var(--space-3);
+	background: rgb(255 255 255 / 3%);
+	border: 1px solid rgb(255 255 255 / 5%);
+	border-radius: var(--radius-lg);
+	animation: card-enter 0.36s ease-out both;
+}
+
+.summaryRow + .summaryRow {
+	margin-top: var(--space-1);
+}
+
+.priorityBadge,
+.deadline {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	min-height: 2rem;
+	padding: 0 var(--space-3);
+	font: var(--font-caption);
+	border-radius: var(--radius-lg);
+}
+
+.priorityBadge {
+	justify-self: start;
+}
+
+.high {
+	color: #b9ff76;
+	background: rgb(166 255 0 / 15%);
+}
+
+.medium {
+	color: #ffd65c;
+	background: rgb(255 214 92 / 13%);
+}
+
+.low {
+	color: #a6b8ff;
+	background: rgb(97 130 255 / 14%);
+}
+
+.deadline {
+	justify-self: start;
+	color: var(--color-text-primary);
+}
+
+.stats {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	width: 100%;
+	padding: var(--space-3);
+	background: rgb(14 19 21 / 62%);
+	border: 1px solid rgb(255 255 255 / 12%);
+	border-radius: var(--radius-2xl);
+	backdrop-filter: blur(1.5rem);
+}
+
+.stats div {
+	display: grid;
+	justify-items: center;
+	gap: var(--space-1);
+	padding: 0 var(--space-3);
+}
+
+.stats div + div {
+	border-left: 1px solid rgb(255 255 255 / 8%);
+}
+
+.stats span {
+	font: var(--font-caption);
+	color: var(--color-text-secondary);
+}
+
+.stats strong {
+	font: var(--font-h2);
+	color: var(--color-text-primary);
+}
+
+.progressDock {
+	position: fixed;
+	right: 50%;
+	bottom: var(--space-7);
+	z-index: 4;
+	display: grid;
+	gap: var(--space-2);
+	width: min(100% - 2rem, 32rem);
+	padding: var(--space-3);
+	background: rgb(14 19 21 / 62%);
+	border: 1px solid rgb(255 255 255 / 12%);
+	border-radius: var(--radius-md);
+	box-shadow: 0 1rem 3rem rgb(0 0 0 / 36%);
+	backdrop-filter: blur(1.5rem);
+	transform: translateX(50%);
+}
+
+.progressMeta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	font: var(--font-caption);
+	color: var(--color-text-secondary);
+}
+
+.notificationStack {
+	position: fixed;
+	top: var(--space-6);
+	left: 50%;
+	z-index: 4;
+	display: grid;
+	justify-items: center;
+	gap: var(--space-3);
+	width: min(100% - 2rem, 30rem);
+	pointer-events: none;
+	transform: translateX(-50%);
+}
+
+.notificationStack > * {
+	pointer-events: auto;
+}
+
+.notificationEnterActive,
+.notificationLeaveActive {
+	transition:
+		opacity 420ms var(--motion-ease-cinematic),
+		transform 420ms var(--motion-ease-cinematic),
+		filter 420ms var(--motion-ease-cinematic);
+}
+
+.notificationEnterFrom {
+	opacity: 0;
+	filter: blur(8px);
+	transform: translateY(-0.75rem) scale(0.98);
+}
+
+.notificationEnterTo,
+.notificationLeaveFrom {
+	opacity: 1;
+	filter: blur(0);
+	transform: translateY(0) scale(1);
+}
+
+.notificationLeaveTo {
+	opacity: 0;
+	filter: blur(6px);
+	transform: translateY(-0.5rem) scale(0.98);
+}
+
+.labelEnterActive,
+.labelLeaveActive {
+	transition:
+		opacity 260ms var(--motion-ease-soft),
+		transform 260ms var(--motion-ease-soft),
+		filter 260ms var(--motion-ease-soft);
+}
+
+.labelEnterFrom {
+	opacity: 0;
+	filter: blur(4px);
+	transform: translateY(0.25rem);
+}
+
+.labelEnterTo,
+.labelLeaveFrom {
+	opacity: 1;
+	filter: blur(0);
+	transform: translateY(0);
+}
+
+.labelLeaveTo {
+	opacity: 0;
+	filter: blur(4px);
+	transform: translateY(-0.25rem);
+}
+
+@media (width <= 880px) {
+	.heroTitle,
+	.title {
+		font: var(--font-h1);
+		letter-spacing: -0.045em;
+	}
+
+	.heroSubtitle {
+		font: var(--font-body-lg);
+	}
+
+	.content {
+		padding: var(--space-8) var(--space-4) 8rem;
+	}
+}
+
+@media (width <= 640px) {
+	.content {
+		padding: var(--space-6) var(--space-3) 8rem;
+	}
+
+	.goalBoard {
+		width: 100%;
+	}
+
+	.actions {
+		width: 100%;
+	}
+
+	.actions > * {
+		flex: 1;
+	}
+
+	.goalPreviewText,
+	.summaryHead,
+	.summaryRow {
+		grid-template-columns: 1fr;
+		align-items: start;
+	}
+
+	.goalPreviewText {
+		display: grid;
+	}
+
+	.summaryHead {
+		display: none;
+	}
+
+	.summaryRow {
+		gap: var(--space-3);
+	}
+
+	.stats {
+		grid-template-columns: 1fr;
+	}
+
+	.stats div + div {
+		padding-top: var(--space-3);
+		margin-top: var(--space-3);
+		border-top: 1px solid rgb(255 255 255 / 8%);
+		border-left: 0;
+	}
+}
+
+@keyframes page-fade-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes reveal-soft {
+	from {
+		opacity: 0;
+		filter: blur(8px);
+		transform: translateY(1rem);
+	}
+
+	to {
+		opacity: 1;
+		filter: blur(0);
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes reveal-panel {
+	from {
+		opacity: 0;
+		filter: blur(10px);
+		transform: translateY(1.25rem) scale(0.98);
+	}
+
+	to {
+		opacity: 1;
+		filter: blur(0);
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes goal-card-enter {
+	from {
+		opacity: 0;
+		filter: blur(8px);
+		transform: translateY(1rem) scale(0.96);
+	}
+
+	to {
+		opacity: 1;
+		filter: blur(0);
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes card-enter {
+	from {
+		opacity: 0;
+		filter: blur(7px);
+		transform: translateY(0.75rem);
+	}
+
+	to {
+		opacity: 1;
+		filter: blur(0);
+		transform: translateY(0);
+	}
+}
+
+@keyframes word-enter {
+	from {
+		opacity: 0;
+		transform: translateY(0.7em) rotateX(38deg);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0) rotateX(0);
+	}
+}
+
+@keyframes text-rise {
+	from {
+		opacity: 0;
+		transform: translateY(0.75rem);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes text-glow-shift {
+	0%,
+	100% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
+}
+
+@keyframes status-pulse {
+	0%,
+	100% {
+		opacity: 0.46;
+		transform: scale(0.86);
+	}
+
+	50% {
+		opacity: 1;
+		transform: scale(1.1);
+	}
+}
+
+@keyframes plus-glow-pulse {
+	0%,
+	100% {
+		box-shadow:
+			0 0 1.35rem rgb(151 106 255 / 42%),
+			0 0 2.4rem rgb(166 255 0 / 24%);
+	}
+
+	50% {
+		box-shadow:
+			0 0 1.7rem rgb(151 106 255 / 52%),
+			0 0 3.1rem rgb(166 255 0 / 34%);
+	}
+}
+
+@keyframes generated-shimmer {
+	0% {
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+
+	18%,
+	72% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateX(120%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page,
+	.heroAccent,
+	.titleWord,
+	.subtitle,
+	.addCard,
+	.plusMark,
+	.goalDraftCard,
+	.aiCard,
+	.summaryRow,
+	.heroButton,
+	.startButton,
+	.revealHeadline,
+	.revealSubtitle,
+	.revealPanel,
+	.generatedItem::after {
+		animation: none;
+	}
+
+	.screenEnterActive,
+	.screenLeaveActive,
+	.listEnterActive,
+	.listLeaveActive,
+	.listMove,
+	.labelEnterActive,
+	.labelLeaveActive,
+	.notificationEnterActive,
+	.notificationLeaveActive {
+		transition-duration: 1ms;
+	}
+
+	.screenEnterFrom,
+	.screenLeaveTo,
+	.listEnterFrom,
+	.listLeaveTo,
+	.labelEnterFrom,
+	.labelLeaveTo,
+	.notificationEnterFrom,
+	.notificationLeaveTo {
+		filter: none;
+		transform: none;
+	}
 }

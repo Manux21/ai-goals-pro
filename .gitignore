@@ -47,5 +47,8 @@ htmlcov/
 # Generated
 backend/openapi.json
 
+# Large local assets
+frontend/src/assets/video/onboarding-background.mp4
+
 # Cursor
 .cursor/
